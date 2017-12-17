@@ -149,24 +149,19 @@ int main(int argc, char** argv) {
             
         }
         
-        cout<<endl;
-        cout<<sum_hamming<<" ";
+//        cout<<endl;
+//        cout<<sum_hamming<<" ";
         if(best_sum_hamming>=sum_hamming){
             best_sum_hamming=sum_hamming;
             result=original[i];
         }
-        cout<<best_sum_hamming;
+        //cout<<best_sum_hamming;
     }
     cout<<result;
      
     output_file<<result;
     output_file.close();
     input_file.close();
-//    for (int i = 0; i < number_str; i++)
-//        delete [] all_patterns[i];
-//    delete str;
-//    delete result;
-//    delete motifs;
     return 0;
 }
 
