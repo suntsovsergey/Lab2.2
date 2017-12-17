@@ -22,9 +22,11 @@ using namespace std;
 /*
  * 
  */
-string *motifs(int length ){
+string *all_motifs(int length ){
     int *mas=new int[length];
-    string *rez= new string [pow(4,length)];
+    int number=1;
+    int y=pow(4,length);// кол-во всех наборов из  A C G T  длины length
+    string *rez= new string [y];
     for(int i=0;i<length;i++){
         mas[i]=0;
     }
@@ -50,15 +52,19 @@ string *motifs(int length ){
     //проверка на совпадение 
     int ch=0;
     for(int i=0;i<length;i++){
-        if(mas[i]==3)ch++;
-            //cout<<mas[i];
+        if(mas[i]==3)ch++;    
+        switch (mas[i]){
+            case 0 : rez[number]+="A";break;
+            case 1 : rez[number]+="C";break;
+            case 2 : rez[number]+="G";break;
+            case 3 : rez[number]+="T";break; 
         }
-    for(int i=1;i<pow(4,length);i++){
-        rez[i]
-        
-    }
+        //cout<<mas[i];
+    } 
+    number++;
     if(ch==length) pr=1;
     } 
+    return rez;
 }
 
 
@@ -79,15 +85,16 @@ int main(int argc, char** argv) {
     string a1;
     string result;//результат
     string motifs;//текущий  мотив
-    string **all_patterns;//все наборы 
+    string **all_patterns;//все наборы из строки
+    string *original; //наборы составленые из A C G T
     int length_pattern;
     int number_str;
     int length_str;
-    int best_hamming=0;//наилучшее расстяние хэмминга
+    int best_hamming=INT_MAX;//наилучшее расстяние хэмминга
     int hamming;// расстояние хэмминга для текущего 
     getline(input_file,a1,' ');
     length_pattern=atoi(a1.c_str());
-    str=new string [10];
+    
     //считаем кол-во 
     while (!input_file.eof())
     {
@@ -118,10 +125,39 @@ int main(int argc, char** argv) {
             }
         }
     }
+    //cout<<length_pattern;
+    int z=pow(4,length_pattern);
+    int sum_hamming;
+    int best_sum_hamming=INT_MAX;
+    original=new string[z];
+    original=all_motifs(length_pattern);
     
-    
-    
-    
+    for(int i=0;i<z;i++){//цикл по наборам AAA...TTT
+        sum_hamming=0;
+        for(int j=0;j<number_str;j++){// цикл по строкам
+            best_hamming=INT_MAX;
+            for(int h=0;h<length_str-length_pattern+1;h++){
+               hamming=hamming_distance(original[i],all_patterns[j][h],length_pattern);
+               //cout<<hamming<<" ";
+               if(best_hamming>=hamming){
+                   best_hamming=hamming;
+               }
+//               cout<<best_hamming<<" ";
+            }
+            //cout<<endl;
+            sum_hamming+=best_hamming;
+            
+        }
+        
+        cout<<endl;
+        cout<<sum_hamming<<" ";
+        if(best_sum_hamming>=sum_hamming){
+            best_sum_hamming=sum_hamming;
+            result=original[i];
+        }
+        cout<<best_sum_hamming;
+    }
+    cout<<result;
      
     output_file<<result;
     output_file.close();
